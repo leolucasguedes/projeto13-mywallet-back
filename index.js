@@ -83,6 +83,64 @@ app.post("/cadastro", async (req, res) => {
     res.sendStatus(201);
   } catch (e) {
     chalk.bold.red(console.log(e));
-    return res.status(500).send("Usuário não encontrado");
+    return res.status(500).send("Erro ao cadastrar o usuário");
+  }
+});
+
+app.get("/registros", async (req, res) => {
+  try {
+    const records = await database.collection("registros").find().toArray();
+    res.send(records);
+  } catch (e) {
+    console.log(e);
+    return res.status(500).send("Erro ao obter os registros!", e);
+  }
+});
+
+app.post("/novaentrada", async (req, res) => {
+  const entry = req.body;
+  const entryschema = joi.object({
+    value: joi.number().required(),
+    description: joi.string().required(),
+  });
+  const { error } = entryschema.validate(req.body);
+  if (error) {
+    chalk.bold.red(console.log(error));
+    res.sendStatus(422);
+    return;
+  }
+  try {
+    await database.collection("registros").insertOne({
+      value: user.value,
+      description: user.description,
+    });
+    res.sendStatus(201);
+  } catch (e) {
+    chalk.bold.red(console.log(e));
+    return res.sendStatus(500);
+  }
+});
+
+app.post("/novasaida", async (req, res) => {
+  const exit = req.body;
+  const exitschema = joi.object({
+    value: joi.number().required(),
+    description: joi.string().required(),
+  });
+  const { error } = exitschema.validate(req.body);
+  if (error) {
+    chalk.bold.red(console.log(error));
+    res.sendStatus(422);
+    return;
+  }
+  try {
+    await database.collection("registros").insertOne({
+      value: user.value,
+      description: user.description,
+    });
+    res.sendStatus(201);
+  } catch (e) {
+    chalk.bold.red(console.log(e));
+    return res.sendStatus(500);
   }
 });
