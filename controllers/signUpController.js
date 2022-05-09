@@ -4,15 +4,10 @@ import { v4 as uuid } from "uuid";
 import bcrypt from "bcrypt";
 
 import database from "../database.js";
+import registerschema from "./../schemas"
 
 export async function postSignUp(req, res) {
   const { name, email, password, confirmation } = req.body;
-  const registerschema = joi.object({
-    name: joi.string().min(3).max(30).required(),
-    email: joi.string().email().required(),
-    password: joi.string().min(1).required(),
-    repassword: joi.ref("password"),
-  });
   const xx = { name, email, password, confirmation };
   const { error } = registerschema.validate(xx, { abortEarly: false });
   const cryptPassword = bcrypt.hashSync(password, 10);

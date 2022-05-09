@@ -11,6 +11,7 @@ import "dayjs/locale/pt-br.js";
 import database from "./database.js";
 import { postSignUp } from "./controllers/signUpController.js";
 import { postSignIn } from "./controllers/signInController.js";
+import validateschema from "./schemas"
 
 dotenv.config();
 const app = express();
@@ -29,11 +30,6 @@ app.post("/", postSignIn);
 app.post("/myrecords", async (req, res) => {
   const { authorization } = req.headers;
   const { value, type, describe } = req.body;
-  const validateschema = joi.object({
-    value: joi.number().min(1).required(),
-    type: joi.any().valid("entrada", "saida").required(),
-    describe: joi.string().min(1).required(),
-  });
   const { error } = validateschema.validate(req.body);
   if (error) {
     res.status(400).send(
