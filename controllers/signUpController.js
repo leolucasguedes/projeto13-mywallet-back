@@ -4,12 +4,12 @@ import { v4 as uuid } from "uuid";
 import bcrypt from "bcrypt";
 
 import database from "../database.js";
-import registerschema from "./../schemas"
+import registerschema from "./../schemas/registerSchema.js"
 
 export async function postSignUp(req, res) {
   const { name, email, password, confirmation } = req.body;
-  const xx = { name, email, password, confirmation };
-  const { error } = registerschema.validate(xx, { abortEarly: false });
+  const data = { name, email, password, confirmation };
+  const { error } = registerschema.validate(data, { abortEarly: false });
   const cryptPassword = bcrypt.hashSync(password, 10);
   if (error) {
     chalk.bold.red(console.log(error));

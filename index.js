@@ -11,11 +11,11 @@ import "dayjs/locale/pt-br.js";
 import database from "./database.js";
 import { postSignUp } from "./controllers/signUpController.js";
 import { postSignIn } from "./controllers/signInController.js";
-import validateschema from "./schemas"
+import validateschema from "./schemas/recordSchema.js"
 
 dotenv.config();
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(json());
 
